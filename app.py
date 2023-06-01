@@ -28,7 +28,8 @@ def check_session():
 
 @app.route('/api/chatbot', methods=['POST'])
 def chatbot_response():
-    message=request.json['message']
+    # message=request.json['message']
+    message = request.form.get('message')
     print(message)
     
     append_message("user", message)
