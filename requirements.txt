@@ -1,0 +1,11 @@
+Flask==2.2.2
+click==8.0
+gunicorn==20.0.4
+itsdangerous==2.0
+jinja2>=3.0 
+MarkupSafe>=2.1.1
+psycopg2==2.9.1
+tweepy==3.9.0
+Werkzeug>=2.2.2
+Flask-Cors==3.0.10
+openai==0.27.7
