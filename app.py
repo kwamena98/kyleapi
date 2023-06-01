@@ -101,6 +101,7 @@ def append_message(role, content):
 def check_session():
     if 'session_id' not in session:
         create_session()
+        print(session['session_id'])
     else:
         print(session['session_messages'])
 
