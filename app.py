@@ -101,6 +101,8 @@ def append_message(role, content):
 def check_session():
     if 'session_id' not in session:
         create_session()
+    else:
+        print(session['session_messages'])
 
 @app.route('/api/chatbot', methods=['POST'])
 def chatbot_response():
