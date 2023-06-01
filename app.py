@@ -4,7 +4,6 @@ from flask import Flask, session, request, jsonify
 from flask_cors import CORS
 import random
 from flask_session import Session
-from flask_sqlalchemy import SQLAlchemy
 from redis import Redis
 import urllib.parse
 
