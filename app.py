@@ -1,20 +1,18 @@
-
+import os
 import openai
 from flask import Flask, session, request, jsonify
 from flask_cors import CORS
-import random
 from flask_session import Session
 from redis import Redis
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = Redis(host='172.105.148.175', port=6379, password='')
-app.secret_key = "kajsdkajsdlkjaslkdjlkasjdlas"
+app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379, password='your_password')  # Update Redis connection details
+app.secret_key = os.urandom(24)  # Generate a secure secret key
 Session(app)
 
 CORS(app)
-openai.api_key = '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'
-
+openai.api_key = 'your_openai_api_key'  # Update with your OpenAI API key
 
 def create_session(session_id):
     session['session_id'] = session_id
@@ -32,19 +30,14 @@ def append_message(role, content):
 
 @app.route('/api/chatbot', methods=['POST'])
 def chatbot_response():
-    # message = request.json.get('message')
-    # session_id = request.json.get('session_id')
-
     message = request.form.get('message')
     session_id=request.form.get('session_id')
 
     if 'session_id' not in session or session['session_id'] != session_id:
         create_session(session_id)
         print("NEW")
-        print(session_id)
     else:
         print("HERE")
-        print(session['session_messages'])
 
     append_message("user", message)
     messages = session['session_messages']
