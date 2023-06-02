@@ -41,6 +41,7 @@ def chatbot_response():
     if 'session_id' not in session or session['session_id'] != session_id:
         create_session(session_id)
         print("NEW")
+        print(session_id)
     else:
         print("HERE")
         print(session['session_messages'])
