@@ -32,8 +32,8 @@ def append_message(role, content):
 
 @app.route('/api/chatbot', methods=['POST'])
 def chatbot_response():
-    message = request.form.get('message')
-    session_id=request.form.get('session_id')
+    message = request.json.get('message')
+    session_id=request.json.get('session_id')
     print(session)
 
     if 'session_id' not in session or session['session_id'] != session_id:
