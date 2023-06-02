@@ -86,6 +86,8 @@ def chatbot_response():
     )
 
     chatbot_reply = response["choices"][0]["message"]["content"]
+    message_history.append({"role": "assistant", "content": chatbot_reply})
+
 
     return jsonify({'answer': chatbot_reply, 'message_history': message_history})
 
