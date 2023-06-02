@@ -7,7 +7,7 @@ from redis import Redis
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379, password='your_password')  # Update Redis connection details
+app.config['SESSION_REDIS'] = Redis(host='172.105.148.175', port=6379, password='')  # Update Redis connection details
 app.secret_key = os.urandom(24)  # Generate a secure secret key
 Session(app)
 
