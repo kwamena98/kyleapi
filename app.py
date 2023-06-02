@@ -32,10 +32,12 @@ def append_message(role, content):
 def chatbot_response():
     message = request.form.get('message')
     session_id=request.form.get('session_id')
+    print(session)
 
     if 'session_id' not in session or session['session_id'] != session_id:
         create_session(session_id)
         print("NEW")
+        print(session_id)
     else:
         print("HERE")
 
