@@ -16,6 +16,8 @@ openai.api_key = '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'  # Update
 
 def create_session(session_id):
     session['session_id'] = session_id
+    session.permanent = True  # Set the session as permanent
+    session.modified = True  # Mark the session as modified
     session['session_messages'] = [
         {"role": "system",
          "content": "Hi, my name is Ambittmedia assistant, a digital marketing agency and web development company that helps businesses succeed online. We specialize in SEO, PPC advertising, social media marketing, and web development. Please provide your name, email, and phone number so that we can contact you later."}
@@ -39,7 +41,8 @@ def chatbot_response():
         print("NEW")
         print(session_id)
     else:
-        print("HERE")
+        print("EXISTING")
+        print(session['session_messages'])
 
     append_message("user", message)
     messages = session['session_messages']
