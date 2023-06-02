@@ -12,7 +12,7 @@ app.secret_key = os.urandom(24)  # Generate a secure secret key
 Session(app)
 
 CORS(app)
-openai.api_key = 'your_openai_api_key'  # Update with your OpenAI API key
+openai.api_key = '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'  # Update with your OpenAI API key
 
 def create_session(session_id):
     session['session_id'] = session_id
