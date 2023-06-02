@@ -5,19 +5,12 @@ from flask_cors import CORS
 import random
 from flask_session import Session
 from redis import Redis
-import urllib.parse
 
 app = Flask(__name__)
-app.config['SESSION_TYPE'] = 'redis'  # Set the session type to Redis
-redis_url = urllib.parse.urlparse('redis://red-chsh7ud269vdk4n87i20:6379')
-app.config['SESSION_REDIS'] = Redis(
-    host=redis_url.hostname,
-    port=redis_url.port,
-    password=redis_url.password,
-)
-
-Session(app)
+app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_REDIS'] = Redis(host='172.105.148.175', port=6379, password='')
 app.secret_key="kajsdkajsdlkjaslkdjlkasjdlas"
+Session(app)
 
 CORS(app)
 openai.api_key = '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'
@@ -48,6 +41,8 @@ def check_session():
 @app.route('/api/chatbot', methods=['POST'])
 def chatbot_response():
     message = request.form.get('message')
+    # message=request.json['message']
+    # print(message)
     append_message("user", message)
     messages = session['session_messages']
     
