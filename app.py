@@ -1,70 +1,34 @@
-# import os
-# import openai
-# from flask import Flask, session, request, jsonify
-# from flask_cors import CORS
-# from flask_session import Session
-# from redis import Redis
-
-# app = Flask(__name__)
-# app.config['SESSION_TYPE'] = 'redis'
-# app.config['SESSION_REDIS'] = Redis(host='172.105.148.175', port=6379, password='')  # Update Redis connection details
-# app.secret_key = os.urandom(24)  # Generate a secure secret key
-# Session(app)
-
-# CORS(app)
-# openai.api_key = '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'  # Update with your OpenAI API key
-
-# # def create_session(session_id):
-# #     session['session_id'] = session_id
-# #     session.permanent = True  # Set the session as permanent
-# #     session.modified = True  # Mark the session as modified
-# #     session['session_messages'] = [
-# #         {"role": "system",
-# #          "content": "Hi, my name is Ambittmedia assistant, a digital marketing agency and web development company that helps businesses succeed online. We specialize in SEO, PPC advertising, social media marketing, and web development. Please provide your name, email, and phone number so that we can contact you later."}
-# #     ]
-
-
-# def append_message(role, content):
-#     messages = session['session_messages']
-#     messages.append({"role": role, "content": content})
-#     session['session_messages'] = messages
-
-
-# @app.route('/api/chatbot', methods=['POST'])
-# def chatbot_response():
-#     message = request.json.get('message')
-#     session_id=request.json.get('session_id')
-#     print(session)
-
-#     if 'session_id' not in session or session['session_id'] != session_id:
-#         create_session(session_id)
-#         print("NEW")
-#         print(session_id)
-#     else:
-#         print("EXISTING")
-#         print(session['session_messages'])
-
-#     append_message("user", message)
-#     messages = session['session_messages']
-
-#     response = openai.ChatCompletion.create(
-#         model="gpt-3.5-turbo",
-#         messages=messages
-#     )
-
-#     chatbot_reply = response["choices"][0]["message"]["content"]
-#     append_message("assistant", chatbot_reply)
-
-#     return jsonify({'answer': chatbot_reply})
-
-# if __name__ == '__main__':
-#     app.run()
-
-
 import os
 import openai
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import psycopg2
+import os
+import re
+
+def validate_email(email):
+    pattern = r'^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email) is not None
+
+def validate_name(name):
+    pattern = r'^[A-Za-z\s]{1,50}$'
+    return re.match(pattern, name) is not None
+
+def validate_phone_number(phone_number):
+    pattern = r'^[0-9]{10,15}$'
+    return re.match(pattern, phone_number) is not None
+
+
+
+conn = psycopg2.connect(
+    dbname="derrickdb",
+    user="derrickson",
+    password="ww2DadsonKwamena",
+    host="172.105.148.175",
+    port="5432"
+)
+
+
 
 app = Flask(__name__)
 CORS(app)
@@ -75,8 +39,73 @@ openai.api_key = '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'  # Update
 def chatbot_response():
     data = request.json
     message_history = data.get('message_history', [])
-
+    session_id=data.get('session_id')
     user_message = data.get('message')
+
+    print(session_id)
+
+    if validate_name(user_message):
+        print("Name")
+        cur = conn.cursor()
+        cur.execute(f"SELECT * FROM ambittmedia_clients where session_id={session_id}")
+        user_exist=cur.fetchall()
+
+        if user_exist:
+            
+            update_query = f"""
+                UPDATE ambittmedia_clients
+                SET name = {user_message},
+                WHERE session_id = {session_id};
+            """
+            cur.execute(update_query)
+        else:
+            insert_query=("INSERT INTO ambittmedia_clients (name,session_id) VALUES(%s,%s)")
+            record_to_insert = (user_message, session_id)
+            cur.execute(insert_query, record_to_insert)
+            conn.commit()
+    
+    elif validate_email(user_message):
+        print("Email")
+        cur = conn.cursor()
+        cur.execute(f"SELECT * FROM ambittmedia_clients where session_id={session_id}")
+        user_exist=cur.fetchall()
+
+        if user_exist:
+            
+            update_query = f"""
+                UPDATE ambittmedia_clients
+                SET email = {user_message},
+                WHERE session_id = {session_id};
+            """
+            cur.execute(update_query)
+            conn.commit()
+
+ 
+
+        # else:
+        #     insert_query=("INSERT INTO ambittmedia_clients (name,session_id) VALUES(%s,%s)")
+        #     record_to_insert = (user_message, session_id)
+        #     cur.execute(insert_query, record_to_insert)
+        #     conn.commit()        
+
+    elif validate_phone_number(user_message):
+        print("Phone Number")
+        cur = conn.cursor()
+        cur.execute(f"SELECT * FROM ambittmedia_clients where session_id={session_id}")
+        user_exist=cur.fetchall()
+
+        if user_exist:
+            update_query = f"""
+                UPDATE ambittmedia_clients
+                SET phone_number = {user_message},
+                WHERE session_id = {session_id};
+            """
+            cur.execute(update_query)
+            conn.commit()
+
+
+    
+
     if user_message:
         message_history.append({"role": "user", "content": user_message})
 
