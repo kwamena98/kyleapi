@@ -11,8 +11,10 @@ def validate_email(email):
     return re.match(pattern, email) is not None
 
 def validate_name(name):
-    pattern = r'^[A-Za-z\s]{1,50}$'
-    return re.match(pattern, name) is not None
+    if name== "Derrick Dadson":
+        return True
+    # pattern = r'^[A-Za-z\s]{1,50}$'
+    # return re.match(pattern, name) is not None
 
 def validate_phone_number(phone_number):
     pattern = r'^[0-9]{10,15}$'
@@ -47,7 +49,7 @@ def chatbot_response():
     if validate_name(user_message):
         print("Name")
         cur = conn.cursor()
-        cur.execute(f"SELECT * FROM ambittmedia_clients where session_id={session_id}")
+        cur.execute(f"SELECT * FROM ambittmedia_clients where session_id='{session_id}'")
         user_exist=cur.fetchall()
 
         if user_exist:
@@ -68,7 +70,7 @@ def chatbot_response():
     elif validate_email(user_message):
         print("Email")
         cur = conn.cursor()
-        cur.execute(f"SELECT * FROM ambittmedia_clients where session_id={session_id}")
+        cur.execute(f"SELECT * FROM ambittmedia_clients where session_id='{session_id}'")
         user_exist=cur.fetchall()
 
         if user_exist:
@@ -92,7 +94,7 @@ def chatbot_response():
     elif validate_phone_number(user_message):
         print("Phone Number")
         cur = conn.cursor()
-        cur.execute(f"SELECT * FROM ambittmedia_clients where session_id={session_id}")
+        cur.execute(f"SELECT * FROM ambittmedia_clients where session_id='{session_id}'")
         user_exist=cur.fetchall()
 
         if user_exist:
