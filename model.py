@@ -24,8 +24,8 @@ cur = conn.cursor()
 #     )
 
 # """
-x="SJjeea"
-cur.execute("SELECT * FROM ambittmedia_clients where session_id='{}'")
+x="J42VoufgiB"
+cur.execute(f"SELECT * FROM ambittmedia_clients where session_id='{x}'")
 data=cur.fetchall()
 print(data)
 # cur.execute(command)

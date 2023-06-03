@@ -17,9 +17,8 @@ def validate_name(name):
     # return re.match(pattern, name) is not None
 
 def validate_phone_number(phone_number):
-    pattern = r'^[0-9]{10,15}$'
+    pattern = r'^(?:\+|0)?[0-9]{10,15}$'
     return re.match(pattern, phone_number) is not None
-
 
 
 conn = psycopg2.connect(
