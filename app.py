@@ -57,7 +57,7 @@ def chatbot_response():
             update_query = f"""
                 UPDATE ambittmedia_clients
                 SET name = {user_message},
-                WHERE session_id = {session_id};
+                WHERE session_id = '{session_id}';
             """
             cur.execute(update_query)
             conn.commit()
@@ -78,7 +78,7 @@ def chatbot_response():
             update_query = f"""
                 UPDATE ambittmedia_clients
                 SET email = {user_message},
-                WHERE session_id = {session_id};
+                WHERE session_id = '{session_id}';
             """
             cur.execute(update_query)
             conn.commit()
@@ -101,7 +101,7 @@ def chatbot_response():
             update_query = f"""
                 UPDATE ambittmedia_clients
                 SET phone_number = {user_message},
-                WHERE session_id = {session_id};
+                WHERE session_id = '{session_id}';
             """
             cur.execute(update_query)
             conn.commit()

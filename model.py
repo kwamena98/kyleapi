@@ -14,16 +14,19 @@ cur = conn.cursor()
 
 
 
-command ="""
-    CREATE TABLE ambittmedia_clients(
-    id SERIAL,
-    email VARCHAR(10000),
-    name VARCHAR(20000),
-    session_id VARCHAR(100000),
-    phone_number VARCHAR(40000)
-    )
+# command ="""
+#     CREATE TABLE ambittmedia_clients(
+#     id SERIAL,
+#     email VARCHAR(10000),
+#     name VARCHAR(20000),
+#     session_id VARCHAR(100000),
+#     phone_number VARCHAR(40000)
+#     )
 
-"""
-
-cur.execute(command)
-conn.commit()
+# """
+x="SJjeea"
+cur.execute("SELECT * FROM ambittmedia_clients where session_id='{}'")
+data=cur.fetchall()
+print(data)
+# cur.execute(command)
+# conn.commit()
