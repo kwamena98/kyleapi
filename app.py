@@ -56,7 +56,7 @@ def chatbot_response():
             
             update_query = f"""
                 UPDATE ambittmedia_clients
-                SET name = {user_message},
+                SET name = '{user_message}',
                 WHERE session_id = '{session_id}';
             """
             cur.execute(update_query)
@@ -77,7 +77,7 @@ def chatbot_response():
             
             update_query = f"""
                 UPDATE ambittmedia_clients
-                SET email = {user_message},
+                SET email = '{user_message}',
                 WHERE session_id = '{session_id}';
             """
             cur.execute(update_query)
@@ -100,7 +100,7 @@ def chatbot_response():
         if user_exist:
             update_query = f"""
                 UPDATE ambittmedia_clients
-                SET phone_number = {user_message},
+                SET phone_number = '{user_message}',
                 WHERE session_id = '{session_id}';
             """
             cur.execute(update_query)
