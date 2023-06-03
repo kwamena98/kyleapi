@@ -54,12 +54,12 @@ def chatbot_response():
 
         if user_exist:
             
-            update_query = f"""
+            update_query = """
                 UPDATE ambittmedia_clients
-                SET name = '{user_message}',
-                WHERE session_id = '{session_id}';
+                SET name = %s
+                WHERE session_id = %s;
             """
-            cur.execute(update_query)
+            cur.execute(update_query, (user_message, session_id))
             conn.commit()
         else:
             insert_query=("INSERT INTO ambittmedia_clients (name,session_id) VALUES(%s,%s)")
@@ -75,12 +75,12 @@ def chatbot_response():
 
         if user_exist:
             
-            update_query = f"""
+            update_query = """
                 UPDATE ambittmedia_clients
-                SET email = '{user_message}',
-                WHERE session_id = '{session_id}';
+                SET email = %s
+                WHERE session_id = %s;
             """
-            cur.execute(update_query)
+            cur.execute(update_query, (user_message, session_id))
             conn.commit()
 
  
@@ -98,12 +98,12 @@ def chatbot_response():
         user_exist=cur.fetchall()
 
         if user_exist:
-            update_query = f"""
+            update_query = """
                 UPDATE ambittmedia_clients
-                SET phone_number = '{user_message}',
-                WHERE session_id = '{session_id}';
+                SET phone_number = %s
+                WHERE session_id = %s;
             """
-            cur.execute(update_query)
+            cur.execute(update_query, (user_message, session_id))
             conn.commit()
 
 
