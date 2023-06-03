@@ -58,6 +58,7 @@ def chatbot_response():
                 WHERE session_id = {session_id};
             """
             cur.execute(update_query)
+            conn.commit()
         else:
             insert_query=("INSERT INTO ambittmedia_clients (name,session_id) VALUES(%s,%s)")
             record_to_insert = (user_message, session_id)
