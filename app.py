@@ -6,9 +6,19 @@ import psycopg2
 import os
 import re
 
-def validate_email(email):
-    pattern = r'^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    return re.match(pattern, email) is not None
+# def validate_email(email):
+#     pattern = r'^[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+#     return re.match(pattern, email) is not None
+
+def validate_email(message):
+    pattern = r'[\w.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+    match = re.search(pattern, message)
+    if match:
+        email = match.group()
+        return email
+    else:
+        return None
+
 
 def validate_name(name):
     if name== "Derrick Dadson":
@@ -16,11 +26,16 @@ def validate_name(name):
     # pattern = r'^[A-Za-z\s]{1,50}$'
     # return re.match(pattern, name) is not None
 
-def validate_phone_number(phone_number):
-    pattern = r'^(?:\+|0)?[0-9]{10,15}$'
-    return re.match(pattern, phone_number) is not None
-
-
+def validate_phone_number(message):
+    pattern = r'(?:\+|0)?[0-9]{10,15}'
+    match = re.search(pattern, message)
+    if match:
+        phone_number = match.group()
+        return phone_number
+    else:
+        return None
+    
+    
 conn = psycopg2.connect(
     dbname="derrickdb",
     user="derrickson",
@@ -79,7 +94,7 @@ def chatbot_response():
                 SET email = %s
                 WHERE session_id = %s;
             """
-            cur.execute(update_query, (user_message, session_id))
+            cur.execute(update_query, (validate_email(user_message), session_id))
             conn.commit()
 
  
@@ -102,7 +117,7 @@ def chatbot_response():
                 SET phone_number = %s
                 WHERE session_id = %s;
             """
-            cur.execute(update_query, (user_message, session_id))
+            cur.execute(update_query, (validate_phone_number(user_message), session_id))
             conn.commit()
 
 
